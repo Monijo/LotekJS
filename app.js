@@ -32,12 +32,12 @@ const h1Ref = createTag({
 )
 const h3Ref =createTag({
     tagName: "h3",
-    tagText: "Podaj 5(Mały lotek) lub 6(duży lotek) liczb oddzielonych przecinkiem i kliknij 'Dalej'. Rozpocznie się losowanie"
+    tagText: "Podaj 5(Mały lotek) lub 6(duży lotek) niepowtarzalnych liczb oddzielonych przecinkiem i kliknij 'Dalej'. Rozpocznie się losowanie"
 })
 
 const inputRef = createTag({
     tagName: "input",
-    tagAttrs: [{name: 'type', value: 'text'}],
+    tagAttrs: [{name: 'type', value: 'text'}, {name:'name', value: 'userNumbers'}],
 
     tagId: "inputNumbers"
 
@@ -46,6 +46,12 @@ const inputRef = createTag({
 const buttonRef = createTag({
     tagName: "button",
     tagText: "Dalej",
+    tagEvt: [
+        {
+            type: "click",
+            callback: checkUserNumbers
+        }
+    ]
 
 })
 
@@ -56,6 +62,8 @@ const resultRef = createTag({
 
 const resultValue = createTag({
     tagName: "span",
+    tagId: "resultValue",
+    tagText: ""
 })
 
 const winRef = createTag({
@@ -64,8 +72,50 @@ const winRef = createTag({
 })
 
 const winValue = createTag({
-    tagName: "span"
+    tagName: "span",
+    tagId: "winValue",
+    tagText: ""
 })
+
+
+const resultRefTag = document.getElementById("resultValue");
+const winRefTag = document.getElementById("winValue");
+
+function checkUserNumbers(){
+    const numbersInput = document.getElementById("inputNumbers")
+    const userNumbers = numbersInput.value.split(",");
+    if(userNumbers.every(el=> !isNaN(el))) {
+
+
+        if (userNumbers.length === 6 || userNumbers.length === 5) {
+            console.log("jestm tu 1")
+            const range = userNumbers.length === 6 ? 50 : 36;
+            const arr = [];
+            while (arr !== userNumbers.length) {
+                let num = Math.floor(Math.random() * range)
+                if (arr.indexOf(num) === -1) {
+                    arr.push(num)
+                }
+            }
+            // resultRef.value = arr.filter((el) => userNumbers.includes(el)).length
+            const mainPrize = 1000000
+            resultRefTag.innerText = 3;
+            winRefTag.innerText = 100;
+            // winRef.value = resultRef.value === userNumbers.length ? mainPrize : 0
+        }else{
+            alert("Podaj poprawna ilość liczb( 5 lub 6)!")
+            numbersInput.value = ""
+        }
+    }
+
+    else {
+
+
+        alert("Wpisz poprawne liczby!");
+        numbersInput.value = "";
+    }
+
+}
 
 document.body.appendChild(h1Ref)
 document.body.appendChild(h3Ref)
