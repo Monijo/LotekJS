@@ -25,6 +25,7 @@ const createTag = ({tagName="div", tagAttrs, tagText, tagId, tagEvt, tagClass}={
     return node
 }
 
+
 const h1Ref = createTag({
     tagName: "h1",
     tagText: "Witaj graczu!"
@@ -78,50 +79,53 @@ const winValue = createTag({
 })
 
 
-const resultRefTag = document.getElementById("resultValue");
-const winRefTag = document.getElementById("winValue");
 
 function checkUserNumbers(){
-    const numbersInput = document.getElementById("inputNumbers")
-    const userNumbers = numbersInput.value.split(",");
+    const numbersInput = document.getElementById("inputNumbers");
+    const userNumbers = numbersInput.value.split(",").map((el)=>parseInt(el));
+
     if(userNumbers.every(el=> !isNaN(el))) {
 
+        const userNumbersLength = userNumbers.length;
 
-        if (userNumbers.length === 6 || userNumbers.length === 5) {
-            console.log("jestm tu 1")
-            const range = userNumbers.length === 6 ? 50 : 36;
+        if ( userNumbersLength=== 6 || userNumbersLength === 5) {
+            const range = userNumbersLength === 6 ? 50 : 36;
             const arr = [];
-            while (arr !== userNumbers.length) {
+            while(arr.length < userNumbersLength) {
                 let num = Math.floor(Math.random() * range)
                 if (arr.indexOf(num) === -1) {
                     arr.push(num)
                 }
+
             }
-            // resultRef.value = arr.filter((el) => userNumbers.includes(el)).length
-            const mainPrize = 1000000
-            resultRefTag.innerText = 3;
-            winRefTag.innerText = 100;
-            // winRef.value = resultRef.value === userNumbers.length ? mainPrize : 0
-        }else{
-            alert("Podaj poprawna ilość liczb( 5 lub 6)!")
-            numbersInput.value = ""
+            const hits = arr.filter((el)=> userNumbers.includes((el))).length;
+            resultValue.innerText = hits;
+
+            const mainPrize = 1000000;
+            const LittleConsoletionPrize = hits === userNumbersLength-2? mainPrize*0.05: 0;
+            const consolationPrize = hits ===userNumbersLength-1? mainPrize*0.2: LittleConsoletionPrize;
+            const prize = hits === userNumbersLength? mainPrize : consolationPrize;
+            winValue.innerText = `${prize} zł.`
+
+        }
+        else{
+            alert("Podaj poprawna ilość liczb( 5 lub 6)!");
+            numbersInput.value = "";
         }
     }
 
     else {
-
-
         alert("Wpisz poprawne liczby!");
         numbersInput.value = "";
     }
 
 }
 
-document.body.appendChild(h1Ref)
-document.body.appendChild(h3Ref)
-document.body.appendChild(inputRef)
-document.body.appendChild(buttonRef)
-document.body.appendChild(resultRef)
-resultRef.appendChild(resultValue)
-document.body.appendChild(winRef)
-winRef.appendChild(winValue)
+document.body.appendChild(h1Ref);
+document.body.appendChild(h3Ref);
+document.body.appendChild(inputRef);
+document.body.appendChild(buttonRef);
+document.body.appendChild(resultRef);
+resultRef.appendChild(resultValue);
+document.body.appendChild(winRef);
+winRef.appendChild(winValue);
