@@ -129,3 +129,4 @@ document.body.appendChild(resultRef);
 resultRef.appendChild(resultValue);
 document.body.appendChild(winRef);
 winRef.appendChild(winValue);
+console.log("Działa")
